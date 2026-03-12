@@ -1,7 +1,7 @@
 import os
-import dj_database_url
-
 from pathlib import Path
+
+import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,6 +20,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Third-party
+    "rest_framework",
+    "drf_spectacular",
+    "cloudinary",
+    "cloudinary_storage",
+    # Local
     "team",
     "pwb",
     "user",
@@ -56,11 +62,7 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 
 # Database
-DATABASES = {
-    "default": dj_database_url.parse(
-        os.environ["DATABASE_URL"]
-    )
-}
+DATABASES = {"default": dj_database_url.parse(os.environ["DATABASE_URL"])}
 
 
 # Password validation
@@ -100,3 +102,15 @@ CLOUDINARY_STORAGE = {
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
 
+# Rest Framework
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "PWB(Personal Website Builder) API",
+    "DESCRIPTION": "API documentation for Personal Website Builder",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+}
