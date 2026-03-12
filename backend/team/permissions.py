@@ -25,4 +25,4 @@ class IsAdminOrReadOnly(BasePermission):
         if not user or not user.is_authenticated or not user.is_staff:
             return False
 
-        return True 
+        return True

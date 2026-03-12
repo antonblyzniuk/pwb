@@ -31,4 +31,3 @@ class TeammateViewSet(
         if self.action in {"retrieve", "update", "partial_update"}:
             return TeammateRetrieveSerializer
         return TeammateListSerializer
-
