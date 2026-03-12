@@ -25,7 +25,7 @@ class Teammate(models.Model):
 class Link(models.Model):
     name = models.CharField(max_length=100)
     teammate = models.ForeignKey(
-        Teammate, on_delete=models.CASCADE, related_name="social_links"
+        Teammate, on_delete=models.CASCADE, related_name="links"
     )
     link = models.URLField(blank=True, null=True)
 
