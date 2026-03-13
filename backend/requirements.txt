@@ -22,3 +22,4 @@ urllib3==2.6.3
 drf-spectacular==0.29.0
 django-cloudinary-storage==0.3.0
 gunicorn==25.0.1
+whitenoise==6.11.0
