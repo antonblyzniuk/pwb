@@ -1,0 +1,2 @@
+from .registration import AdminRegisterSerializer as AdminRegisterSerializer
+from .registration import UserRegisterSerializer as UserRegisterSerializer
