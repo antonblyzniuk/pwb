@@ -1,0 +1,2 @@
+from .registration import UserRegistrationView as UserRegistrationView
+from .registration import AdminRegistrationView as AdminRegistrationView
