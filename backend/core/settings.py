@@ -12,6 +12,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "127.0.0.1").split(",")
 AUTH_USER_MODEL = "user.User"
+ADMIN_REGISTER_SECRET_CODE = os.environ["ADMIN_REGISTER_SECRET_CODE"]
 
 # Static files
 STATIC_URL = "/static/"
