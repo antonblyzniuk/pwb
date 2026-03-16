@@ -1,0 +1,25 @@
+from rest_framework import serializers
+from user.models import User
+
+
+class UserRetrieveSerializer(serializers.ModelSerializer):
+    profile_picture = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = (
+            "email",
+            "first_name",
+            "last_name",
+            "is_staff",
+            "is_superuser",
+            "last_login",
+            "date_joined",
+            "profile_picture",
+        )
+
+    def get_profile_picture(self, obj):
+        if obj.profile_picture:
+            return obj.profile_picture.url
+        return None
+
