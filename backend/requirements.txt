@@ -34,4 +34,6 @@ six==1.17.0
 sqlparse==0.5.5
 uritemplate==4.2.0
 urllib3==2.6.3
+gunicorn
 whitenoise
+psycopg2-binary
