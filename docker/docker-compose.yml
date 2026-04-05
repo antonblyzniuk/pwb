@@ -2,7 +2,7 @@ services:
   web:
     build:
       context: ../backend
-      dockerfile: ../docker/backend/dev/Dockerfile.dev
+      dockerfile: ../docker/dev/Dockerfile.dev
     container_name: django_dev
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
