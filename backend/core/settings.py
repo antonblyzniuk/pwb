@@ -12,10 +12,25 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "127.0.0.1").split(",")
 AUTH_USER_MODEL = "user.User"
-ADMIN_REGISTER_SECRET_CODE = os.environ["ADMIN_REGISTER_SECRET_CODE"]
+ADMIN_REGISTRATION_SECRET_CODE = os.environ["ADMIN_REGISTRATION_SECRET_CODE"]
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ["CSRF_TRUSTED_ORIGINS"].split(",")
+    if origin.strip()
+]
+CORS_ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ["CORS_ALLOWED_ORIGINS"].split(",")
+    if origin.strip()
+]
+CORS_ALLOW_CREDENTIALS = os.environ.get("CORS_ALLOW_CREDENTIALS", "False") == "True"
 
 # Static files
-STATIC_URL = "/static/"
+STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
