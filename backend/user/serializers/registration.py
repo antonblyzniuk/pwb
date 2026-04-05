@@ -40,7 +40,7 @@ class AdminRegisterSerializer(UserRegisterSerializer):
         ]
 
     def validate_secret_code(self, value):
-        if value != settings.ADMIN_REGISTER_SECRET_CODE:
+        if value != settings.ADMIN_REGISTRATION_SECRET_CODE:
             raise serializers.ValidationError("Invalid secret code.")
         return value
 
