@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Third-party
     "rest_framework",
     "drf_spectacular",
+    "corsheaders",
     "cloudinary",
     "cloudinary_storage",
     # Local
