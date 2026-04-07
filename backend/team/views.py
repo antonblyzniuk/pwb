@@ -9,11 +9,11 @@ from .serializers import TeammateListSerializer, TeammateRetrieveSerializer
 @extend_schema_view(
     list=extend_schema(
         summary="List all teammates",
-        tags=["Teammates"],
+        tags=["teammates"],
     ),
     retrieve=extend_schema(
         summary="Retrieve a teammate",
-        tags=["Teammates"],
+        tags=["teammates"],
     ),
 )
 class TeammateViewSet(
