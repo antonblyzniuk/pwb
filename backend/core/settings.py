@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Third-party
     "rest_framework",
     "drf_spectacular",
+    "corsheaders",
     "cloudinary",
     "cloudinary_storage",
     # Local
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
