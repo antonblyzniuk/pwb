@@ -1,5 +1,6 @@
+from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils import choices
+from django.db.models import F, Q
 
 
 class PWBUnit(models.Model):
@@ -50,8 +51,34 @@ class Language(models.Model):
         return self.name
 
 
-# class ExperienceUnit(models.Model):
-#     pass
+class ExperienceUnit(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    from_date = models.DateField()
+    to_date = models.DateField()
+    pwb_unit = models.ForeignKey(
+        PWBUnit, on_delete=models.CASCADE, related_name="experience_units"
+    )
+
+    def clean(self):
+        if self.to_date and self.from_date:
+            if self.to_date <= self.from_date:
+                raise ValidationError(
+                    {"to_date": "to_date must be later than from_date"}
+                )
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=Q(to_date__gt=F("from_date")),
+                name="experience_to_date_after_from_date",
+            )
+        ]
+
+    def __str__(self):
+        return self.name
+
+
 #
 #
 # class Project(models.Model):
@@ -63,4 +90,6 @@ class Language(models.Model):
 #
 #
 # class Photo(models.Model):
+#     pass
+# class Certification(models.Model):
 #     pass

@@ -1,10 +1,15 @@
 from django.contrib import admin
 
-from .models import Language, Link, PWBUnit, Skill
+from .models import ExperienceUnit, Language, Link, PWBUnit, Skill
 
 
 class SkillInline(admin.TabularInline):
     model = Skill
+    extra = 1
+
+
+class ExperienceUnitInline(admin.TabularInline):
+    model = ExperienceUnit
     extra = 1
 
 
@@ -20,4 +25,4 @@ class LanguageInline(admin.TabularInline):
 
 @admin.register(PWBUnit)
 class PWBUnitAdmin(admin.ModelAdmin):
-    inlines = [SkillInline, LinkInline, LanguageInline]
+    inlines = [SkillInline, LinkInline, LanguageInline, ExperienceUnitInline]
