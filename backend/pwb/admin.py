@@ -1,3 +1,12 @@
 from django.contrib import admin
+from .models import PWBUnit, Skill
 
-# Register your models here.
+
+class SkillInline(admin.TabularInline):
+    model = Skill
+    extra = 1
+
+
+@admin.register(PWBUnit)
+class PWBUnitAdmin(admin.ModelAdmin):
+    inlines = [SkillInline]
