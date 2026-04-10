@@ -1,7 +1,12 @@
 from django.urls import include, path
-from .views import ping
+from rest_framework.routers import DefaultRouter
+from .views import ping, PWBUnitViewSet
 
+
+router = DefaultRouter()
+router.register("pwbunits", PWBUnitViewSet, "pwbunit")
 
 urlpatterns = [
-        path("ping/", ping, name="ping")
+        path("ping/", ping, name="ping"),
+        path("", include(router.urls)),
 ]
