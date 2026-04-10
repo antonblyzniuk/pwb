@@ -5,7 +5,11 @@ from django.db.models import F, Q
 
 
 class PWBUnit(models.Model):
-    unit_name = models.CharField(max_length=100)
+    unit_name = models.CharField(max_length=100, unique=True)
+    frist_name = models.CharField(max_length=63)
+    last_name = models.CharField(max_length=63)
+    email = models.EmailField()
+    about = models.TextField()
 
     def __str__(self):
         return self.unit_name
@@ -185,4 +189,4 @@ class Photo(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return "Photo"
+        return f"photo -> {self.pwb_unit.unit_name}"
