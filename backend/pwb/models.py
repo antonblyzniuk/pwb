@@ -1,3 +1,4 @@
+from cloudinary.models import CloudinaryField
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import F, Q
@@ -79,10 +80,41 @@ class ExperienceUnit(models.Model):
         return self.name
 
 
-#
-#
-# class Project(models.Model):
-#     pass
+class Project(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    pwb_unit = models.ForeignKey(
+        PWBUnit, on_delete=models.CASCADE, related_name="projects"
+    )
+    image = CloudinaryField(
+        "image",
+        blank=True,
+        null=True,
+        folder="pwb_project_images",
+        transformation={
+            "quality": "auto",
+            "fetch_format": "auto",
+            "width": 1200,
+            "height": 1200,
+            "crop": "limit",
+        },
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class ProjectLink(models.Model):
+    name = models.CharField(max_length=100)
+    url = models.URLField()
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="links"
+    )
+
+    def __str__(self):
+        return self.name
+
+
 #
 #
 # class EducationUnit(models.Model):
@@ -90,6 +122,4 @@ class ExperienceUnit(models.Model):
 #
 #
 # class Photo(models.Model):
-#     pass
-# class Certification(models.Model):
 #     pass
