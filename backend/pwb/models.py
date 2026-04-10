@@ -1,6 +1,6 @@
 from cloudinary.models import CloudinaryField
 from django.core.exceptions import ValidationError
-from django.db import models
+from django.db import models, transaction
 from django.db.models import F, Q
 
 
@@ -115,11 +115,74 @@ class ProjectLink(models.Model):
         return self.name
 
 
-#
-#
-# class EducationUnit(models.Model):
-#     pass
-#
-#
-# class Photo(models.Model):
-#     pass
+class EducationUnit(models.Model):
+    name = models.CharField(max_length=100)
+    from_date = models.DateField()
+    to_date = models.DateField()
+    image = CloudinaryField(
+        "image",
+        blank=True,
+        null=True,
+        folder="pwb_education_unit_images",
+        transformation={
+            "quality": "auto",
+            "fetch_format": "auto",
+            "width": 1200,
+            "height": 1200,
+            "crop": "limit",
+        },
+    )
+    description = models.TextField()
+    pwb_unit = models.ForeignKey(
+        PWBUnit, on_delete=models.CASCADE, related_name="education_units"
+    )
+
+    def clean(self):
+        if self.to_date and self.from_date:
+            if self.to_date <= self.from_date:
+                raise ValidationError(
+                    {"to_date": "to_date must be later than from_date"}
+                )
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=Q(to_date__gt=F("from_date")),
+                name="education_to_date_after_from_date",
+            )
+        ]
+
+    def __str__(self):
+        return self.name
+
+
+class Photo(models.Model):
+    image = CloudinaryField(
+        "image",
+        blank=True,
+        null=True,
+        folder="PWBUnit_photos_pwb",
+        transformation={
+            "quality": "auto",
+            "fetch_format": "auto",
+            "width": 1200,
+            "height": 1200,
+            "crop": "limit",
+        },
+    )
+    is_main = models.BooleanField(default=False,)
+
+    pwb_unit = models.ForeignKey(
+        PWBUnit, on_delete=models.CASCADE, related_name="photos"
+    )
+
+    def save(self, *args, **kwargs):
+        with transaction.atomic():
+            if self.is_main:
+                Photo.objects.filter(pwb_unit=self.pwb_unit, is_main=True).exclude(
+                    pk=self.pk
+                ).update(is_main=False)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return "Photo"
