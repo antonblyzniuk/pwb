@@ -2,10 +2,12 @@ from cloudinary.models import CloudinaryField
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.db.models import F, Q
+from user.models import User
 
 
 class PWBUnit(models.Model):
-    unit_name = models.CharField(max_length=100, unique=True)
+    unit_name = models.SlugField(unique=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="pwbunits")
     frist_name = models.CharField(max_length=63)
     last_name = models.CharField(max_length=63)
     email = models.EmailField()
@@ -111,9 +113,7 @@ class Project(models.Model):
 class ProjectLink(models.Model):
     name = models.CharField(max_length=100)
     url = models.URLField()
-    project = models.ForeignKey(
-        Project, on_delete=models.CASCADE, related_name="links"
-    )
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="links")
 
     def __str__(self):
         return self.name
@@ -174,7 +174,9 @@ class Photo(models.Model):
             "crop": "limit",
         },
     )
-    is_main = models.BooleanField(default=False,)
+    is_main = models.BooleanField(
+        default=False,
+    )
 
     pwb_unit = models.ForeignKey(
         PWBUnit, on_delete=models.CASCADE, related_name="photos"
