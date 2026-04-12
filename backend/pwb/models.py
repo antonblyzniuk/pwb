@@ -10,8 +10,17 @@ class PWBUnit(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="pwbunits")
     frist_name = models.CharField(max_length=63)
     last_name = models.CharField(max_length=63)
+    profession = models.CharField(max_length=63)
     email = models.EmailField()
-    about = models.TextField()
+    about = models.TextField(blank=True, null=True)
+    pdf_resume = CloudinaryField(
+        "file",
+        resource_type="raw",
+        folder="PWBUnit_pdf_resumes",
+        blank=True,
+        type="upload",
+        null=True,
+    )
 
     def __str__(self):
         return self.unit_name
@@ -46,7 +55,8 @@ class Language(models.Model):
         B2_Upper_Intermediate = "B2 Upper-Intermediate", "B2 Upper-Intermediate"
         C1_Advanced = "C1 Advanced", "C1 Advanced"
         C2_Advanced_Proficy = "C2 Advanced Proficy", "C2 Advanced Proficy"
-        Native_or_Bilingual = "Native or Bilingual", "Native or Bilingual"
+        Native = "Native", "Native"
+        Bilingual = "Bilingual", "Bilingual"
 
     name = models.CharField(max_length=100)
     level = models.CharField(choices=Level.choices)
@@ -60,7 +70,7 @@ class Language(models.Model):
 
 class ExperienceUnit(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     from_date = models.DateField()
     to_date = models.DateField()
     pwb_unit = models.ForeignKey(
@@ -88,7 +98,7 @@ class ExperienceUnit(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     pwb_unit = models.ForeignKey(
         PWBUnit, on_delete=models.CASCADE, related_name="projects"
     )
@@ -136,7 +146,7 @@ class EducationUnit(models.Model):
             "crop": "limit",
         },
     )
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     pwb_unit = models.ForeignKey(
         PWBUnit, on_delete=models.CASCADE, related_name="education_units"
     )

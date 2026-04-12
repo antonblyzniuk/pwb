@@ -1,12 +1,32 @@
 from django.forms import fields
+from cloudinary.utils import cloudinary_url
 from rest_framework import serializers
 
-from .models import (EducationUnit, ExperienceUnit, Language, Link, PWBUnit,
-                     Skill, Photo)
+from .models import (EducationUnit, ExperienceUnit, Language, Link, Photo,
+                     Project, ProjectLink, PWBUnit, Skill)
+
+class ProjectLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectLink
+        fields = ["name", "url"]
+
+class ProjectSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    links = ProjectLinkSerializer(many=True)
+
+    class Meta:
+        model = Project
+        fields = ["name", "description", "links", "image"]
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url
+        return None
+
 
 class PhotoSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = Photo
         fields = ["image", "is_main"]
@@ -16,8 +36,10 @@ class PhotoSerializer(serializers.ModelSerializer):
             return obj.image.url
         return None
 
+
 class EducationUnitSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
+
     class Meta:
         model = EducationUnit
         fields = ["name", "description", "from_date", "to_date", "image"]
@@ -26,6 +48,7 @@ class EducationUnitSerializer(serializers.ModelSerializer):
         if obj.image:
             return obj.image.url
         return None
+
 
 class ExperienceUnitSerializer(serializers.ModelSerializer):
     class Meta:
@@ -58,18 +81,28 @@ class PWBUnitSerializer(serializers.ModelSerializer):
     experience_units = ExperienceUnitSerializer(many=True)
     education_units = EducationUnitSerializer(many=True)
     photos = PhotoSerializer(many=True)
+    projects = ProjectSerializer(many=True)
+    pdf_resume = serializers.SerializerMethodField()
 
     class Meta:
         model = PWBUnit
         fields = [
             "frist_name",
             "last_name",
+            "profession",
             "email",
             "about",
+            "pdf_resume",
             "skills",
             "links",
             "languages",
             "experience_units",
             "education_units",
-            "photos"
+            "projects",
+            "photos",
         ]
+
+    def get_pdf_resume(self, obj):
+        if obj.pdf_resume:
+            return obj.pdf_resume.url
+        return None

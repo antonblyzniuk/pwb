@@ -18,7 +18,19 @@ def ping(reqeust):
 
 
 class PWBUnitViewSet(RetrieveModelMixin, GenericViewSet):
-    queryset = PWBUnit.objects.all()
+    queryset = (
+        PWBUnit.objects.all()
+        .select_related("owner")
+        .prefetch_related(
+            "links",
+            "skills",
+            "languages",
+            "experience_units",
+            "education_units",
+            "photos",
+            "projects",
+        )
+    )
     serializer_class = PWBUnitSerializer
     lookup_field = "unit_name"
     lookup_url_kwarg = "unit_name"
