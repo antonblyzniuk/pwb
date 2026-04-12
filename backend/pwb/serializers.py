@@ -1,4 +1,5 @@
 from django.forms import fields
+from cloudinary.utils import cloudinary_url
 from rest_framework import serializers
 
 from .models import (EducationUnit, ExperienceUnit, Language, Link, Photo,
@@ -81,14 +82,17 @@ class PWBUnitSerializer(serializers.ModelSerializer):
     education_units = EducationUnitSerializer(many=True)
     photos = PhotoSerializer(many=True)
     projects = ProjectSerializer(many=True)
+    pdf_resume = serializers.SerializerMethodField()
 
     class Meta:
         model = PWBUnit
         fields = [
             "frist_name",
             "last_name",
+            "profession",
             "email",
             "about",
+            "pdf_resume",
             "skills",
             "links",
             "languages",
@@ -97,3 +101,8 @@ class PWBUnitSerializer(serializers.ModelSerializer):
             "projects",
             "photos",
         ]
+
+    def get_pdf_resume(self, obj):
+        if obj.pdf_resume:
+            return obj.pdf_resume.url
+        return None
