@@ -104,5 +104,9 @@ class PWBUnitSerializer(serializers.ModelSerializer):
 
     def get_pdf_resume(self, obj):
         if obj.pdf_resume:
-            return obj.pdf_resume.url
+            filename = f"{obj.frist_name}_{obj.last_name}_resume.pdf"
+            return obj.pdf_resume.url.replace(
+                "/upload/",
+                f"/upload/fl_attachment:{filename}/"
+            )
         return None
